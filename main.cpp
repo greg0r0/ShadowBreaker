@@ -11,6 +11,7 @@
 #include <string.h>
 #include <thread>
 #include <mutex>
+#include <crypt.h>
 
 //FUNCTIONS SECTION
 std::vector<std::string> split(const std::string &s, char delim); // when we will have standart split func?
@@ -40,7 +41,8 @@ public:
         return data;
     }
     bool checkPassword(std::string pass){
-        if (this->hash.compare( crypt(pass.c_str(), this->salt.c_str()) ))
+        struct crypt_data data[1] = {0};
+        if (this->hash.compare( crypt_r(pass.c_str(), this->salt.c_str(), data) ))
             return true;
         return false;
     }
