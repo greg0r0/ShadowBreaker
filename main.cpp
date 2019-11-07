@@ -1,5 +1,4 @@
 /*
-    Zaytsev G. KKSO-01-18
     compile: g++ main.cpp -lcrypt -pthread -o shadowBreaker --std=c++11
 */
 
