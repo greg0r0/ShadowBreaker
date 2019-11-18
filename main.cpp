@@ -57,6 +57,7 @@ std::vector<UserHash> shadow;      //for parsed strings from shadow file
 std::vector<std::string> passList; //for passwords list file
 std::vector<std::thread> threads;  //threads container
 std::mutex lockList;               //to lock passList in thread
+std::mutex lockio;
 
 
 //WORK SECTION
@@ -67,11 +68,15 @@ void bruteUserHash(UserHash hashData){
             std::string pass = passList[i];
         lockList.unlock();
         if (!hashData.checkPassword(pass)){
+            lockio.lock();
             std::cout<< "\n[!] Found Password \n \u2514\u2500> {"<< hashData.username << " <\u2500\u2500> " << pass << "}\n" << std::endl;
+            lockio.unlock();
             return void();
         }
     }
-    std::cout << "[X] Password not found for {" << hashData.username << "} in your list :("<< std::endl<< std::endl;
+    lockio.lock();
+      std::cout << "[X] Password not found for {" << hashData.username << "} in your list :("<< std::endl<< std::endl;
+    lockio.unlock();
 }
 
 int main(int argc, char* argv[]){
